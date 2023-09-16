@@ -1,0 +1,536 @@
+/* Importing Google Fonts */
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Philosopher:wght@400;700&family=Poppins:wght@200;300;400;500;600;700;800&family=Roboto+Slab:wght@300;400;500;600;700;800&display=swap');
+
+body {
+    background-color: #fff;
+}
+
+/* Navbar Styling  */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Philosopher', sans-serif !important;
+}
+
+.para {
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 18px !important;
+    line-height: 30px !important;
+}
+
+nav.navbar {
+    border-bottom: 1px solid #dce1e4;
+    background-color: #fff !important;
+}
+
+nav.navbar .nav-link {
+    font-size: 18px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    color: #014090;
+    padding: 0px 25px !important;
+    text-transform: uppercase;
+
+
+}
+
+
+/* Calendar styling  */
+
+.prayer-calendar {
+    padding: 80px 0px 50px 0;
+}
+
+h2 {
+    font-size: 40px;
+    font-weight: bold;
+    font-family: 'Philosopher', sans-serif !important;
+    color: #014090;
+}
+
+
+
+
+
+
+
+
+/* *********************************** Calendar Styling *************************************  */
+
+
+.ftco-section {
+    padding: 60px 0;
+}
+
+.ftco-section .ftco-no-pt {
+    padding-top: 0;
+}
+
+.ftco-section .ftco-no-pb {
+    padding-bottom: 0;
+}
+
+.ftco-section .heading-section {
+    font-size: 28px;
+    color: #000;
+}
+
+.ftco-section .img {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.ftco-section .elegant-calencar {
+    max-width: 100%;
+    text-align: center;
+    position: relative;
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: 5px;
+    box-shadow: 0px 3px 26px #80808059;
+}
+
+.ftco-section .wrap-header {
+    position: relative;
+    width: 35%;
+    z-index: 0;
+    background-color: #e7eff6;
+}
+
+/* .ftco-section .wrap-header:after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    content: '';
+    background: #67BCFF;
+    opacity: .5;
+    z-index: -1;
+} */
+
+
+
+@media (max-width: 767.98px) {
+    .ftco-section .wrap-header {
+        width: 100%;
+        padding: 20px 0;
+    }
+}
+
+.ftco-section #header {
+    width: 100%;
+    position: relative;
+}
+
+
+.ftco-section #header .pre-button,
+.ftco-section #header .next-button {
+    cursor: pointer;
+    width: 1em;
+    height: 1em;
+    line-height: 1em;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    font-size: 18px;
+}
+
+.ftco-section #header .pre-button i,
+.ftco-section #header .next-button i {
+    color: #fff;
+}
+
+.ftco-section .pre-button {
+    left: 5px;
+}
+
+.ftco-section .next-button {
+    right: 5px;
+}
+
+.ftco-section .button-wrap {
+    position: relative;
+    padding: 10px 0;
+}
+
+.ftco-section .button-wrap .pre-button,
+.ftco-section .button-wrap .next-button {
+    cursor: pointer;
+    width: 1em;
+    height: 1em;
+    line-height: 1em;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    font-size: 18px;
+}
+
+.ftco-section .button-wrap .pre-button i,
+.ftco-section .button-wrap .next-button i {
+    color: #014090;
+}
+
+.ftco-section .button-wrap .pre-button {
+    left: 20px;
+}
+
+.ftco-section .button-wrap .next-button {
+    right: 20px;
+}
+
+.ftco-section .head-day {
+    font-size: 9em;
+    line-height: 1;
+    color: #014090;
+    font-weight: 700;
+}
+
+.ftco-section .head-month {
+    font-size: 2em;
+    line-height: 1;
+    color: #014090;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.ftco-section .calendar-wrap {
+    width: 65%;
+    background-color: #fff;
+}
+
+@media (max-width: 767.98px) {
+    .ftco-section .calendar-wrap {
+        width: 100%;
+    }
+}
+
+.ftco-section #calendar {
+    width: 100%;
+}
+
+.ftco-section #calendar tr {
+    height: 4em;
+}
+
+.ftco-section thead tr {
+    color: #014090;
+    font-weight: 700;
+}
+
+.ftco-section tbody tr {
+    color: #000;
+}
+
+.ftco-section tbody td {
+    width: 14%;
+    border-radius: 50%;
+    cursor: pointer;
+    -webkit-transition: all 0.2s ease-in;
+    -o-transition: all 0.2s ease-in;
+    transition: all 0.2s ease-in;
+    position: relative;
+    z-index: 0;
+}
+
+.ftco-section tbody td:after {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    content: '';
+    width: 44px;
+    height: 44px;
+    margin: 0 auto;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    border-radius: 50%;
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
+    transition: 0.3s;
+    z-index: -1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ftco-section tbody td:after {
+        -webkit-transition: none;
+        -o-transition: none;
+        transition: none;
+    }
+}
+
+.ftco-section tbody td:hover,
+.ftco-section .selected {
+    color: #fff;
+    border: none;
+}
+
+.ftco-section tbody td:hover:after,
+.ftco-section .selected:after {
+    background: #67BCFF;
+}
+
+.ftco-section tbody td:active {
+    -webkit-transform: scale(0.7);
+    -ms-transform: scale(0.7);
+    transform: scale(0.7);
+}
+
+.ftco-section #today {
+    color: #fff;
+    font-weight: 500;
+}
+
+.ftco-section #today:after {
+    background: #014090;
+}
+
+.ftco-section #disabled {
+    cursor: default;
+    background: transparent;
+}
+
+.ftco-section #disabled:hover {
+    background: transparent;
+    color: #c9c9c9;
+}
+
+.ftco-section #disabled:hover:after {
+    background: transparent;
+}
+
+.ftco-section #reset {
+    display: block;
+    position: absolute;
+    right: 0.5em;
+    top: 0.5em;
+    z-index: 999;
+    color: rgb(1 64 144);
+    cursor: pointer;
+    padding: 0 0.5em;
+    border: 1px solid rgb(1 64 144);
+    border-radius: 4px;
+    -webkit-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-size: 11px;
+}
+
+.ftco-section #reset:hover {
+    color: #fff;
+    border-color: #fff;
+}
+
+.ftco-section #reset:active {
+    -webkit-transform: scale(0.8);
+    -ms-transform: scale(0.8);
+    transform: scale(0.8);
+}
+
+.blur-background {
+    padding: 40px 20px 20px 20px;
+    background-color: rgb(255 255 255 / 15%);
+    backdrop-filter: blur(5px);
+}
+
+.table.pray-times>:not(caption)>*>* {
+    padding: 22.5px;
+
+}
+
+.ftco-section tr td {
+    font-size: 22px;
+    font-weight: 500;
+}
+
+.table.pray-times tbody {
+    box-shadow: 0px 3px 26px #80808059;
+}
+
+td.pray-name {
+    font-weight: bold;
+}
+
+table.pray-times th {
+    background: #67BCFF;
+}
+
+table.table.pray-times tr {
+    border-color: #013f902b;
+}
+
+li.nav-item {
+    padding: 8px;
+}
+
+li.nav-item.active {
+    background: #014090;
+    border-radius: 40px;
+    border: 3px solid #67BCFF;
+}
+
+nav.navbar .nav-item.active .nav-link {
+    color: white;
+}
+
+h2.bottom-line {
+    position: relative;
+}
+
+h2.bottom-line::after {
+    position: absolute;
+    content: "";
+    width: 120px;
+    height: 2px;
+    bottom: -17px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #014090;
+    border-radius: 100%;
+}
+
+
+
+
+
+
+/* footer styling  */
+
+.footer * {
+    color: black !important;
+}
+
+ul.social-icon {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+ul.social-icon svg {
+    width: 30px;
+}
+
+.fooer-icon a {
+    margin-right: 20px;
+}
+
+.footer {
+    background-color: #e7eff6;
+}
+
+.footer-copyright {
+    background: #67BCFF;
+    color: #fff !important;
+}
+
+ul.footer-icon li {
+    position: relative;
+    padding-left: 35px !important;
+}
+
+ul.footer-icon li::before {
+    font-family: "FontAwesome";
+    font-size: 28px;
+    position: absolute;
+    left: -11px;
+    top: -6px;
+}
+
+ul.footer-icon li:nth-child(1)::before {
+    content: "\f095";
+}
+
+ul.footer-icon li:nth-child(2)::before {
+    content: "\f0e0";
+}
+
+ul.footer-icon li:nth-child(3)::before {
+    content: "\f041";
+}
+
+ul.footer-icon {
+    list-style: none;
+    padding-left: 11px;
+}
+
+ul.footer-icon li a {
+    color: white;
+    font-size: 18px;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+
+ul.footer-icon li {
+    text-decoration: none;
+    margin-bottom: 35px;
+}
+
+.footer h3 {
+    font-size: 35px;
+    position: relative;
+}
+
+.footer h3::after {
+    content: "";
+    position: absolute;
+    width: 70px;
+    height: 2px;
+    background: #67BCFF;
+    left: 0;
+    bottom: -9px;
+    border-radius: 20px;
+    box-shadow: 0px 2px 4px #67BCFF;
+}
+
+.product-list ul.footer-icon li::before {
+    display: none;
+}
+
+.product-list ul.footer-icon {
+    list-style: disc;
+}
+
+.product-list ul.footer-icon li {
+    padding: 0 !important;
+    margin-bottom: 10px !important;
+}
+
+
+
+
+
+/* Responsive Styling  */
+
+
+
+@media only screen and (max-width: 1024px) {
+    .table.pray-times>:not(caption)>*>* {
+        padding: 21.5px 10px;
+    }
+}
+
+@media only screen and (max-width: 991px) {
+    .table.pray-times>:not(caption)>*>* {
+        padding: 21.5px;
+    }
+    .footer .col-lg-4.ps-5 {
+        padding-left: 0 !important;
+        margin: 39px 0px 39px 20px;
+    }
+}
