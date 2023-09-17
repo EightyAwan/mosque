@@ -24,11 +24,11 @@ class PrayerController extends Controller
 
         if( $request->tab === "daily" ){
              
-            $prayerLeader = PrayerLeader::with('user')
+            $prayerLeaders = PrayerLeader::with('user')
             ->whereBetween('prayer_date',[
                 $whereData->startOfWeek()->format('Y-m-d'), $whereData->endOfWeek()->format('Y-m-d')
-            ])->get()->toArray(); 
-
+            ])->get()->toArray();
+ 
             $prayersSection = '<thead class="table-dark">
             <tr>
                 <th scope="col">DAYS</th>';
@@ -52,44 +52,30 @@ class PrayerController extends Controller
                              
                             if($j!==4){
                                 
-                                $prayerIdToCheck = $prayers[$k]->id;
-                                $prayerDateToCheck = $startWeek->format('Y-m-d');
-
-                                // Extract the values you want to search for
-                                $prayerIds = array_column($prayerLeader, 'prayer_id');
-                                $prayerDates = array_column($prayerLeader, 'prayer_date');
-                                
-                                // Check if the combination exists
-                                $index = array_search($prayerIdToCheck, $prayerIds);
+                              
                                 $prayersSection .='<td>';
 
-                                if($index !== false && $prayerDates[$index] == $prayerDateToCheck) {
-                                    $userData = $prayerLeader[$index]['user'];
-                                    $prayersSection .= '<span class="badge badge-secondary">'. $userData['name'] .'</span>';
-                                }
+                                foreach($prayerLeaders as $prayerKey => $prayerVal){
+                                    if($prayerVal['prayer_date'] === $startWeek->format('Y-m-d') && $prayers[$k]->id === $prayerVal['prayer_id']){
+                                        $prayersSection .= '<span class="badge badge-secondary">'. $prayerVal['user']['name'] .'</span>';
+                                    }
+                                } 
 
                                 $prayersSection .='
                                 <button class="btn btn-primary btn-sm lead-pray-btn" data-id='.$prayers[$k]->id.' data-date='.$startWeek->format('Y-m-d').'><img src="'.asset('images/lead-prayer.png').'" width="30px" alt=""></button>
                                 </td>'; 
+
                             }else{
 
                                 if($k!==1){
-
-                                $prayerIdToCheck = $prayers[$k]->id;
-                                $prayerDateToCheck = $startWeek->format('Y-m-d');
-
-                                // Extract the values you want to search for
-                                $prayerIds = array_column($prayerLeader, 'prayer_id');
-                                $prayerDates = array_column($prayerLeader, 'prayer_date');
-                                
-                                // Check if the combination exists
-                                $index = array_search($prayerIdToCheck, $prayerIds);
-                                $prayersSection .='<td>';
-
-                                if($index !== false && $prayerDates[$index] == $prayerDateToCheck) {
-                                    $userData = $prayerLeader[$index]['user'];
-                                    $prayersSection .= '<span class="badge badge-secondary">'. $userData['name'] .'</span>'; 
-                                }
+ 
+                                $prayersSection .='<td>'; 
+                                  
+                                foreach($prayerLeaders as $prayerKey => $prayerVal){
+                                    if($prayerVal['prayer_date'] === $startWeek->format('Y-m-d') && $prayers[$k]->id === $prayerVal['prayer_id']){
+                                        $prayersSection .= '<span class="badge badge-secondary">'. $prayerVal['user']['name'] .'</span>';
+                                    }
+                                }  
 
                                 $prayersSection .='
                                 <button class="btn btn-primary btn-sm lead-pray-btn" data-id='.$prayers[$k]->id.' data-date='.$startWeek->format('Y-m-d').'><img src="'.asset('images/lead-prayer.png').'" width="30px" alt=""></button>
@@ -125,15 +111,35 @@ class PrayerController extends Controller
             $prayersSection .= '<tbody>';
  
             $fridays = $this->getAllFridayByMonth($date->format('Y'), $date->format('m')); 
+
+            $prayerLeaders = PrayerLeader::with('user')
+            ->whereRaw("DAYOFWEEK(prayer_date) = 6")->whereBetween(
+                'prayer_date',
+                [$whereData->startOfWeek()->format('Y-m-d'), $whereData->endOfWeek()->format('Y-m-d')]
+            )
+            ->get()->toArray();
+             
+
             foreach ($fridays as $key => $friday) {
                 
                     $prayersSection .= '<tr>';
                     $prayersSection .= '<td>'.$friday->format('D d').'</td>';
 
                     for($k=5; $k<8; $k++){
-                        $prayersSection .='<td>
-                        <button class="btn btn-primary btn-sm lead-pray-btn" data-id='.$prayers[$key]->id.' data-date='.$friday->format('Y-m-d').'><img src="'.asset('images/lead-prayer.png').'" width="30px" alt=""></button>
-                        </td>';
+                        
+
+                    $prayersSection .='<td>'; 
+ 
+                    foreach($prayerLeaders as $prayerLeader){
+                        if($prayerLeader['prayer_date'] === $friday->format('Y-m-d') && $prayerLeader['prayer_id'] === $prayers[$k]->id){
+                            $prayersSection .= '<span class="badge badge-secondary">'. $prayerLeader['user']['name'] .'</span>';
+                        }
+                    }  
+
+                    $prayersSection .='
+                    <button class="btn btn-primary btn-sm lead-pray-btn" data-id='.$prayers[$k]->id.' data-date='.$friday->format('Y-m-d').'><img src="'.asset('images/lead-prayer.png').'" width="30px" alt=""></button>
+                    </td>';  
+
                     }
 
                     $prayersSection .= '</tr>'; 
