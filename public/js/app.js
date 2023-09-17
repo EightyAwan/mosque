@@ -46,9 +46,26 @@ var options = {
           date:date,
           prayer_id:prayer_id
       },
-      success:function(response){  
-        getPrayers(date);
-        alert(response.message);
+      success:function(response){
+        date = new Date(date);
+        const tab = localStorage.getItem("tab");
+        getPrayers(date, tab);
+
+        Toastify({
+          text: response.message,
+          duration: 3000,
+          destination: "https://github.com/apvarun/toastify-js",
+          newWindow: true,
+          close: true,
+          gravity: "top", // `top` or `bottom`
+          position: "right", // `left`, `center` or `right`
+          stopOnFocus: true, // Prevents dismissing of toast on hover
+          style: {
+            background: "green",
+          },
+          onClick: function(){} // Callback after click
+        }).showToast(); 
+
       },
       error:function(error){ 
         Toastify({
@@ -68,4 +85,13 @@ var options = {
       }
     }); 
 
+  });
+
+
+  $(".prayer-tab").click(function(){
+    
+    var tab = $(this).attr('data-id'); 
+    var date = new Date();
+    localStorage.setItem("tab", tab);
+    getPrayers(date, tab);
   });

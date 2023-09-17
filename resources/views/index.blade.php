@@ -52,10 +52,18 @@
 
     <section class="prayer-calendar">
         <h2 class="text-center bottom-line">Daily Prayer Times</h2>
+        <div class="container align-items-center">
+            <div class="row align-items-center">
+                <div>
+                <a class="prayer-tab" data-id="daily">Daily</a> |
+                <a class="prayer-tab" data-id="friday">Friday</a>
+                </div>
+            </div>
+        </div>
         <div class="calendar-sec">
             <div class="container">
                 <div class="row align-items-center">
-                    <div class="col-lg-9">
+                    <div class="col-lg-5">
                         <section class="ftco-section">
                             <div class="row">
                                 <div class="col-md-12">
@@ -160,16 +168,8 @@
                             </div>
                         </section>
                     </div>
-                    <div class="col-lg-3">
-                        <table class="table table-responsive pray-times m-0" id="prayer-section">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th scope="col">PRAYERS</th>
-                                    <th scope="col"></th>
-                                    <th scope="col"></th>
-                                </tr>
-                            </thead>
-                            
+                    <div class="col-lg-7">
+                        <table class="table table-responsive pray-times m-0" id="prayer-section"> 
                         </table>
                         <div id="target-services"></div>
                     </div>
@@ -231,12 +231,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flickity/2.0.5/flickity.pkgd.min.js"></script>
     <script src="{{ asset('js/app.js') }}"></script>
     <script>
-    function getPrayers(selectedDay){
+    async function getPrayers(selectedDay, tab = null){ 
         $.ajax({
             url:'/get-prayers',
             method:'get',
             data:{
-                date:selectedDay.toISOString().slice(0, 10)
+                date:selectedDay.toISOString().slice(0, 10),
+                tab
             },
             success:function(response){  
                 $("#prayer-section").html(response.data);
@@ -244,7 +245,8 @@
         });
     }
     const currentDate = new Date();
-    getPrayers(currentDate);
+    const tab = localStorage.getItem("tab");
+    getPrayers(currentDate, tab);
 
     </script>
 </body>

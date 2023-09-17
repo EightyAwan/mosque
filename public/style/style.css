@@ -534,3 +534,8 @@ ul.footer-icon li {
         margin: 39px 0px 39px 20px;
     }
 }
+
+button.btn.btn-primary.btn-sm.lead-pray-btn {
+    background: #ffffff;
+    border-color: #014090;
+}
