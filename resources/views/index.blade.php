@@ -27,15 +27,15 @@
                 <img src="{{ asset('images/logo.png') }}" width="60px" alt="">
             </a>
             @if(!Auth::user())
-            <a href="{{ route('login') }}" class="navbar-brand">
+            <a href="{{ route('login') }}" class="navbar-item">
                 Login / Register
             </a>
             @else
-            <a href="{{ route('logout') }}" class="navbar-brand">
+            <a href="{{ route('logout') }}" class="navbar-item">
                 Profile
             </a> 
 
-            <a href="{{ route('logout') }}" class="navbar-brand" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">
+            <a href="{{ route('logout') }}" class="navbar-item" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">
                {{ Auth::user()->name }} / Logout
             </a>    
             <form id="frm-logout" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -51,24 +51,24 @@
 
 
     <section class="prayer-calendar">
-        <h2 class="text-center bottom-line">Daily Prayer Times</h2>
+        <h2 class="text-center bottom-line">Daily Prayer Timings</h2>
         <div class="container align-items-center">
             <div class="row align-items-center">
                 <div>
-                <a class="prayer-tab" data-id="daily">Daily</a> |
-                <a class="prayer-tab" data-id="friday">Friday</a>
+                <a class="prayer-tab daily-tab active" data-id="daily">Daily</a>
+                <a class="prayer-tab friday-tab" data-id="friday">Friday</a>
                 </div>
             </div>
         </div>
         <div class="calendar-sec">
             <div class="container">
                 <div class="row align-items-center">
-                    <div class="col-lg-5">
+                    <div class="col-lg-4">
                         <section class="ftco-section">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="elegant-calencar d-md-flex">
-                                        <div class="wrap-header d-flex align-items-center img">
+                                    <div class="elegant-calencar">
+                                        <div class="wrap-header w-100 py-5 d-flex align-items-center img">
                                             <p id="reset">Today</p>
                                             <div id="header" class="p-0">
 
@@ -95,13 +95,13 @@
                                                 <table id="calendar">
                                                     <thead>
                                                         <tr>
-                                                            <th>Sun</th>
                                                             <th>Mon</th>
                                                             <th>Tue</th>
                                                             <th>Wed</th>
                                                             <th>Thu</th>
                                                             <th>Fri</th>
                                                             <th>Sat</th>
+                                                            <th>Sun</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -168,7 +168,7 @@
                             </div>
                         </section>
                     </div>
-                    <div class="col-lg-7">
+                    <div class="col-lg-8">
                         <table class="table table-responsive pray-times m-0" id="prayer-section"> 
                         </table>
                         <div id="target-services"></div>
@@ -177,6 +177,10 @@
             </div>
         </div>
     </section>
+
+
+
+<!-- Tabs content -->
 
 
 

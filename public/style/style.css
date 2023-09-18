@@ -197,16 +197,15 @@ h2 {
 }
 
 .ftco-section .head-month {
-    font-size: 2em;
     line-height: 1;
     color: #014090;
-    font-size: 16px;
+    font-size: 40px;
     text-transform: uppercase;
-    font-weight: 500;
+    font-weight: 700;
 }
 
 .ftco-section .calendar-wrap {
-    width: 80%;
+    width: 100%;
     background-color: #fff;
 }
 
@@ -373,20 +372,6 @@ table.table.pray-times tr {
     border-color: #013f902b;
 }
 
-li.nav-item {
-    padding: 8px;
-}
-
-li.nav-item.active {
-    background: #014090;
-    border-radius: 40px;
-    border: 3px solid #67BCFF;
-}
-
-nav.navbar .nav-item.active .nav-link {
-    color: white;
-}
-
 h2.bottom-line {
     position: relative;
 }
@@ -544,4 +529,30 @@ button.btn.btn-primary.btn-sm.lead-pray-btn {
 .badge-secondary{
     display: inline-block;
     background-color: orange;
+}
+
+#fridayCalendar{
+    display: none;
+}
+
+
+a.prayer-tab {
+    font-size: 20px;
+    text-decoration: none;
+    padding: 10px 20px 10px 20px;
+    border: 2px solid #014090;
+    cursor: pointer;
+    color: #014090;
+}
+
+a.prayer-tab.active{
+    background-color: #014090;
+    color: white;
+}
+
+a.navbar-item, li.nav-item .nav-link {
+    font-size: 20px;
+    font-weight: 500;
+    color: #014090;
+    text-decoration: none;
 }

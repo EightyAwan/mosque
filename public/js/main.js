@@ -44,7 +44,7 @@
      };
     
     Calendar.prototype.drawDays = function() {
-        var startDay = new Date(year, month, 1).getDay(),
+        var startDay = new Date(year, month, 0).getDay(),
 //      下面表示这个月总共有几天
             nDays = new Date(year, month + 1, 0).getDate(),
     
