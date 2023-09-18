@@ -57,7 +57,7 @@ class PrayerController extends Controller
 
                                 foreach($prayerLeaders as $prayerKey => $prayerVal){
                                     if($prayerVal['prayer_date'] === $startWeek->format('Y-m-d') && $prayers[$k]->id === $prayerVal['prayer_id']){
-                                        $prayersSection .= '<span class="badge badge-secondary">'. $prayerVal['user']['name'] .'</span>';
+                                        $prayersSection .= '<span class="badge badge-secondary" style="background-color:'.$prayerVal['user']['color'].';">'. $prayerVal['user']['name'] .'</span>';
                                     }
                                 } 
 
@@ -71,7 +71,7 @@ class PrayerController extends Controller
                                   
                                 foreach($prayerLeaders as $prayerKey => $prayerVal){
                                     if($prayerVal['prayer_date'] === $startWeek->format('Y-m-d') && $prayers[$k]->id === $prayerVal['prayer_id']){
-                                        $prayersSection .= '<span class="badge badge-secondary">'. $prayerVal['user']['name'] .'</span>';
+                                        $prayersSection .= '<span class="badge badge-secondary" style="background-color:'.$prayerVal['user']['color'].';">'. $prayerVal['user']['name'] .'</span>';
                                     }
                                 }  
 
@@ -127,7 +127,7 @@ class PrayerController extends Controller
  
                     foreach($prayerLeaders as $prayerLeader){
                         if($prayerLeader['prayer_date'] === $friday->format('Y-m-d') && $prayerLeader['prayer_id'] === $prayers[$k]->id){
-                            $prayersSection .= '<span class="badge badge-secondary">'. $prayerLeader['user']['name'] .'</span>';
+                            $prayersSection .= '<span class="badge badge-secondary" style="background-color:'.$prayerLeader['user']['color'].';">'. $prayerLeader['user']['name'] .'</span>';
                         }
                     }  
 
@@ -154,6 +154,13 @@ class PrayerController extends Controller
         if(!Auth::user()){
             return response()->json([
                 'message' => 'Please Login Your Account!',
+                'data' => ''
+            ],401);
+        }
+
+        if(Auth::user()->role_id===0){
+            return response()->json([
+                'message' => 'Only imams can lead the pray.',
                 'data' => ''
             ],401);
         }

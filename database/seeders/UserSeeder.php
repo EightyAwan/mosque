@@ -23,7 +23,7 @@ class UserSeeder extends Seeder
             La Prairie, QC J5R 0P2',
             'color' => null,
             'email_verified_at' => Carbon::now(),
-            'role_id' => 1,
+            'role_id' => 0,
             'password' => Hash::make('admin123'),
         ]);
     }

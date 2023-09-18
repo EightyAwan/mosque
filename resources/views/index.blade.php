@@ -28,7 +28,7 @@
             </a>
             @if(!Auth::user())
             <a href="{{ route('login') }}" class="navbar-item">
-                Login / Register
+                Login
             </a>
             @else
             <a href="{{ route('logout') }}" class="navbar-item">

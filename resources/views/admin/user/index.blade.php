@@ -3,40 +3,42 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-12">
+        <div class="col-md-12"><div class="heading">
+                        <H2> Imams List</H2>
+                    </div>
             <div class="card">
+                <div class="container">
+                    
                 <table class="table">
                     <thead>
                       <tr>
                         <th>Name</th>
                         <th>Email</th>
                         <th>Phone Number</th>
-                        <th>Address</th>
-                        <th>Color</th>
+                        <th>Address</th> 
                         <th>Created At</th>
                         <th>Action</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody> 
+                    @foreach($users as $key => $user)
                       <tr>
-                        <td>John</td>
-                        <td>Doe</td>
-                        <td>john@example.com</td>
+                        <td>{{ $user->name }}</td> 
+                        <td>{{ $user->email }}</td> 
+                        <td>{{ $user->phone_number }}</td> 
+                        <td>{{ $user->address }}</td>  
+                        <td>{{ $user->created_at->diffForHumans() }}</td> 
+                        <td>
+                            <button class="btn btn-primary btn-small">Edit</button>
+                            <button class="btn btn-primary btn-small">View</button>
+                        </td> 
                       </tr>
-                      <tr>
-                        <td>Mary</td>
-                        <td>Moe</td>
-                        <td>mary@example.com</td>
-                      </tr>
-                      <tr>
-                        <td>July</td>
-                        <td>Dooley</td>
-                        <td>july@example.com</td>
-                      </tr>
+                    @endforeach
                     </tbody>
-                  </table>
+                  </table>{!! $users->withQueryString()->links('pagination::bootstrap-5') !!}
+                </div>
                  
-                {!! $users->withQueryString()->links('pagination::bootstrap-5') !!}
+                
             </div>
         </div>
     </div>
