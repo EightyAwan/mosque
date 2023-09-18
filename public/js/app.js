@@ -46,8 +46,14 @@ $('body').on('click', '.lead-pray-btn', function() {
         date:date,
         prayer_id:prayer_id
     },
-    success:function(response){
-      date = new Date(date);
+    success:function(response){ 
+      const selected = localStorage.getItem("selectedDay"); 
+      if(selected===null || selected===undefined){ 
+        date = new Date(date);
+      }else{ 
+        date = new Date(localStorage.getItem("selectedDay")); 
+      }
+
       const tab = localStorage.getItem("tab");
       getPrayers(date, tab);
 
@@ -89,20 +95,20 @@ $('body').on('click', '.lead-pray-btn', function() {
 
 
 $(".prayer-tab").click(function(){
-  
-  var tab = $(this).attr('data-id'); 
-  var date = new Date();
+
+  $("a.prayer-tab").removeClass("active");
+  $(this).addClass("active");
+  var tab = $(this).attr('data-id');
+  const selected = localStorage.getItem("selectedDay"); 
+  if(selected===null || selected===undefined){ 
+    var date = new Date();
+  }else{ 
+    var date = new Date(localStorage.getItem("selectedDay")); 
+  }  
   localStorage.setItem("tab", tab);
   getPrayers(date, tab);
 });
-
-
-$(".prayer-tab").on("click", function(e){
-  $("a.prayer-tab").removeClass("active");
-  $(this).addClass("active");
-});
-
-
+ 
 
 
 // getting url and showing calendar according to url 

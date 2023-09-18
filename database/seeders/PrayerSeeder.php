@@ -35,7 +35,15 @@ class PrayerSeeder extends Seeder
                 "icon" => "images/icon-isha.svg"
             ),
             array(
-                "name" => "JUMMA",
+                "name" => "JUMMA 1",
+                "icon" => "images/icon-dhuhr.svg"
+            ),
+            array(
+                "name" => "JUMMA 2",
+                "icon" => "images/icon-dhuhr.svg"
+            ),
+            array(
+                "name" => "JUMMA 3",
                 "icon" => "images/icon-dhuhr.svg"
             ),
         );

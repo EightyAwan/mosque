@@ -91,8 +91,7 @@
         o.className = "selected";
         
         selectedDay = new Date(year, month, o.innerHTML);
-
-        console.log(selectedDay);
+ 
         const tab = localStorage.getItem("tab"); 
         localStorage.setItem("selectedDay", selectedDay);
         var date = new Date(localStorage.getItem("selectedDay")); 

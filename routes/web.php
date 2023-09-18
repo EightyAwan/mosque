@@ -19,8 +19,13 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
 
 Route::get('/', [MainController::class,'index']);
 Route::get('/get-prayers',[PrayerController::class,'getPrayers'])->name('get-prayers');
 Route::post('/add-lead-pray',[PrayerController::class,'addLeadPray'])->name('add-lead-pray');
+
+Route::group(['prefix' => 'admin'], function () {  
+    Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('admin');
+    Route::resource('user', App\Http\Controllers\Admin\UserController::class);
+ });

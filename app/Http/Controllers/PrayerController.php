@@ -53,7 +53,7 @@ class PrayerController extends Controller
                             if($j!==4){
                                 
                               
-                                $prayersSection .='<td>';
+                                $prayersSection .='<td class="lead-pray-btn" data-id='.$prayers[$k]->id.' data-date='.$startWeek->format('Y-m-d').'>';
 
                                 foreach($prayerLeaders as $prayerKey => $prayerVal){
                                     if($prayerVal['prayer_date'] === $startWeek->format('Y-m-d') && $prayers[$k]->id === $prayerVal['prayer_id']){
@@ -61,15 +61,13 @@ class PrayerController extends Controller
                                     }
                                 } 
 
-                                $prayersSection .='
-                                <button class="btn btn-primary btn-sm lead-pray-btn" data-id='.$prayers[$k]->id.' data-date='.$startWeek->format('Y-m-d').'><img src="'.asset('images/lead-prayer.png').'" width="30px" alt=""></button>
-                                </td>'; 
+                                $prayersSection .='</td>'; 
 
                             }else{
 
                                 if($k!==1){
  
-                                $prayersSection .='<td>'; 
+                                $prayersSection .='<td class="lead-pray-btn"  data-id='.$prayers[$k]->id.' data-date='.$startWeek->format('Y-m-d').'>'; 
                                   
                                 foreach($prayerLeaders as $prayerKey => $prayerVal){
                                     if($prayerVal['prayer_date'] === $startWeek->format('Y-m-d') && $prayers[$k]->id === $prayerVal['prayer_id']){
@@ -77,9 +75,7 @@ class PrayerController extends Controller
                                     }
                                 }  
 
-                                $prayersSection .='
-                                <button class="btn btn-primary btn-sm lead-pray-btn" data-id='.$prayers[$k]->id.' data-date='.$startWeek->format('Y-m-d').'><img src="'.asset('images/lead-prayer.png').'" width="30px" alt=""></button>
-                                </td>'; 
+                                $prayersSection .='</td>'; 
 
                                 }else{
                                     $prayersSection .='<td></td>';
@@ -111,14 +107,13 @@ class PrayerController extends Controller
             $prayersSection .= '<tbody>';
  
             $fridays = $this->getAllFridayByMonth($date->format('Y'), $date->format('m')); 
-
+ 
             $prayerLeaders = PrayerLeader::with('user')
             ->whereRaw("DAYOFWEEK(prayer_date) = 6")->whereBetween(
                 'prayer_date',
-                [$whereData->startOfWeek()->format('Y-m-d'), $whereData->endOfWeek()->format('Y-m-d')]
+                [$whereData->startOfMonth()->format('Y-m-d'), $whereData->endOfMonth()->format('Y-m-d')]
             )
-            ->get()->toArray();
-             
+            ->get()->toArray(); 
 
             foreach ($fridays as $key => $friday) {
                 
@@ -128,7 +123,7 @@ class PrayerController extends Controller
                     for($k=5; $k<8; $k++){
                         
 
-                    $prayersSection .='<td>'; 
+                    $prayersSection .='<td class="lead-pray-btn" data-id='.$prayers[$k]->id.' data-date='.$friday->format('Y-m-d').'>'; 
  
                     foreach($prayerLeaders as $prayerLeader){
                         if($prayerLeader['prayer_date'] === $friday->format('Y-m-d') && $prayerLeader['prayer_id'] === $prayers[$k]->id){
@@ -136,9 +131,7 @@ class PrayerController extends Controller
                         }
                     }  
 
-                    $prayersSection .='
-                    <button class="btn btn-primary btn-sm lead-pray-btn" data-id='.$prayers[$k]->id.' data-date='.$friday->format('Y-m-d').'><img src="'.asset('images/lead-prayer.png').'" width="30px" alt=""></button>
-                    </td>';  
+                    $prayersSection .='</td>';  
 
                     }
 

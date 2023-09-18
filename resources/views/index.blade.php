@@ -247,10 +247,15 @@
                 $("#prayer-section").html(response.data);
             }
         });
+    } 
+    const selected = localStorage.getItem("selectedDay"); 
+    if(selected===null || selected===undefined){ 
+        var date = new Date();
+    }else{ 
+        var date = new Date(localStorage.getItem("selectedDay")); 
     }
-    const currentDate = new Date();
     const tab = localStorage.getItem("tab");
-    getPrayers(currentDate, tab);
+    getPrayers(date, tab);
 
     </script>
 </body>

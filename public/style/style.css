@@ -556,3 +556,8 @@ a.navbar-item, li.nav-item .nav-link {
     color: #014090;
     text-decoration: none;
 }
+
+td.lead-pray-btn {
+    cursor: pointer;
+    border: 1px solid #e1e1e1;
+}
