@@ -63,9 +63,9 @@ h2 {
 /* *********************************** Calendar Styling *************************************  */
 
 
-.ftco-section {
+/* .ftco-section {
     padding: 60px 0;
-}
+} */
 
 .ftco-section .ftco-no-pt {
     padding-top: 0;
@@ -100,6 +100,7 @@ h2 {
     position: relative;
     width: 20%;
     z-index: 0;
+    padding: 22.5px !important;
     background-color: #e7eff6;
 }
 
@@ -199,7 +200,7 @@ h2 {
 .ftco-section .head-month {
     line-height: 1;
     color: #014090;
-    font-size: 40px;
+    font-size: 25px;
     text-transform: uppercase;
     font-weight: 700;
 }
@@ -207,6 +208,10 @@ h2 {
 .ftco-section .calendar-wrap {
     width: 100%;
     background-color: #fff;
+}
+
+.calendar-sec{
+    margin-top: 80px !important;
 }
 
 @media (max-width: 767.98px) {
