@@ -24,6 +24,8 @@ Auth::routes();
 Route::get('/', [MainController::class,'index'])->name('index');
 Route::get('/get-prayers',[PrayerController::class,'getPrayers'])->name('get-prayers');
 Route::post('/add-lead-pray',[PrayerController::class,'addLeadPray'])->name('add-lead-pray');
+Route::get('/profile',[MainController::class,'profile'])->name('profile');
+Route::post('/save-profile',[MainController::class,'saveProfile'])->name('save-profile');
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'isadmin']], function () {  
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('admin');

@@ -29,8 +29,7 @@
                         <td>{{ $user->address }}</td>  
                         <td>{{ $user->created_at->diffForHumans() }}</td> 
                         <td>
-                            <button class="btn btn-primary btn-small">Edit</button>
-                            <button class="btn btn-primary btn-small">View</button>
+                            <a href="{{ route('user.edit', $user->id) }}" class="btn btn-primary btn-small">Edit</a> 
                         </td> 
                       </tr>
                     @endforeach

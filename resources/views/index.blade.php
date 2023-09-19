@@ -23,25 +23,48 @@
     <!-- Navbar  -->
     <nav class="navbar navbar-expand-sm bg-light navbar-light">
         <div class="container">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="{{ route('index')  }}">
                 <img src="{{ asset('images/logo.png') }}" width="60px" alt="">
             </a>
-            @if(!Auth::user())
-            <a href="{{ route('login') }}" class="navbar-item">
-                Login
-            </a>
-            @else
-            <a href="{{ route('logout') }}" class="navbar-item">
-                Profile
-            </a> 
+             
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Account</a>
+                    <ul class="dropdown-menu">
+                        
+                        
 
-            <a href="{{ route('logout') }}" class="navbar-item" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">
-               {{ Auth::user()->name }} / Logout
-            </a>    
+            @if(!Auth::user()) 
+
+            <li><a href="{{ route('login') }}" class="dropdown-item">Login </a></li>
+
+            @else
+
+             @if(Auth::user()->role_id===0)
+
+                <li><a class="dropdown-item" href="{{ route('admin') }}">Dashboard</a></li> 
+
+             @else 
+
+                <li><a class="dropdown-item" href="{{ route('profile') }}">Profile</a></li>
+
+             @endif 
+                        
+             <li><a href="{{ route('logout') }}" class="dropdown-item"  onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">
+             Logout
+             </a>    
             <form id="frm-logout" action="{{ route('logout') }}" method="POST" style="display: none;">
                 {{ csrf_field() }}
-            </form>
-            @endif
+            </form> 
+            </li>
+
+            
+            @endif 
+                    </ul>
+                    </li>
+                </ul>
+
+
         </div>
     </nav>
 
@@ -53,10 +76,12 @@
     <section class="prayer-calendar">
         <h2 class="text-center bottom-line">Daily Prayer Timings</h2>
         <div class="container align-items-center">
-            <div class="row align-items-center">
+            <div class="d-flex justify-content-between align-items-center mt-5 pt-5">
                 <div>
                 <a class="prayer-tab daily-tab active" data-id="daily">Daily</a>
-                <a class="prayer-tab friday-tab" data-id="friday">Friday</a>
+                <a class="prayer-tab friday-tab" data-id="friday">Jumma</a>
+                </div>
+                <div class="imam-name-sec"> 
                 </div>
             </div>
         </div>
@@ -197,13 +222,7 @@
                     <div class="footer-logo">
                         <img src="images/logo.png" alt="" width="50"
                             class="d-inline-block align-text-top img-fluid my-3">
-                    </div>
-                    <div class="footer-content">
-                        <p class="text-light py-1">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-                            sodales dictum viverra. Nam gravida Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            Aenean sodales dictum viverra. Nam gravida dignissim eros dignissim eros</p>
-                         
-                    </div>
+                    </div> 
                 </div> 
             </div>
         </div>
@@ -212,7 +231,7 @@
 
     
     <div class="footer-copyright py-2 text-center">
-        <p class="m-0 p-0">© Copyright 2023 by Refsnes Data. All Rights Reserved. IslamicSite.</p>
+        <p class="m-0 p-0">© Copyright 2023 by Dynalogies. All Rights Reserved</p>
     </div>
 
 
@@ -244,7 +263,16 @@
                 tab
             },
             success:function(response){  
-                $("#prayer-section").html(response.data);
+                $("#prayer-section").html(response.data.prayers);
+                
+                var imams_color = '<h3>Imams:</h3>'; 
+                    
+                for (let i = 0; i < response.data.imams.length; i++) {
+                    imams_color += '<div class="d-flex align-items-center justify-content-between"> <b class="imam-name">'+response.data.imams[i]['name']+'</b> <div class="imam-color1" style="background-color:'+response.data.imams[i]['color']+';" ></div> </div>'; 
+                }
+
+                $(".imam-name-sec").html(imams_color);
+
             }
         });
     } 

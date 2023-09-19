@@ -14,7 +14,7 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: 'Philosopher', sans-serif !important;
+    font-family: sans-serif !important;
 }
 
 .para {
@@ -39,6 +39,10 @@ nav.navbar .nav-link {
 
 }
 
+.navbar-nav ul.dropdown-menu.show {
+    left: 20px;
+    border-color: #014090;
+}
 
 /* Calendar styling  */
 
@@ -53,12 +57,41 @@ h2 {
     color: #014090;
 }
 
+.navbar-nav .dropdown-item.active, .dropdown-item:active {
+    background: #014090;
+}
+
+
+.navbar-nav .dropdown-item:focus, .dropdown-item:hover {
+    background: #014090;
+    color: white !important;
+}
 
 
 
+/* imam name sec styling  */
 
+.imam-color1 {
+    width: 20px;
+    height: 20px;
+    background: rgb(255, 235, 56);
+}
 
+.imam-color2 {
+    width: 20px;
+    height: 20px;
+    background: rgb(0, 143, 55);
+}
 
+.imam-name-sec h3{
+    color: #014090 !important;
+}
+
+.imam-name{
+    margin: 0 !important;
+    color: #000;
+    margin-right: 20px !important;
+}
 
 /* *********************************** Calendar Styling *************************************  */
 
@@ -556,7 +589,7 @@ a.prayer-tab.active{
 }
 
 a.navbar-item, li.nav-item .nav-link {
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 500;
     color: #014090;
     text-decoration: none;

@@ -14,7 +14,8 @@ class PrayerController extends Controller
 
         $date = Carbon::create($request->date)->addDay(1);
         $whereData = Carbon::create($request->date)->addDay(1);
-        $startWeek = $date->startOfWeek();  
+        $startWeek = $date->startOfWeek();
+        $imams = [];
         
 
         $prayers = Prayer::with(['prayerLeader' => function ($query) use ($date) {
@@ -57,6 +58,10 @@ class PrayerController extends Controller
 
                                 foreach($prayerLeaders as $prayerKey => $prayerVal){
                                     if($prayerVal['prayer_date'] === $startWeek->format('Y-m-d') && $prayers[$k]->id === $prayerVal['prayer_id']){
+                                        $imams[] = [
+                                            'name' => $prayerVal['user']['name'],
+                                            'color' => $prayerVal['user']['color'],
+                                        ];
                                         $prayersSection .= '<span class="badge badge-secondary" style="background-color:'.$prayerVal['user']['color'].';">'. $prayerVal['user']['name'] .'</span>';
                                     }
                                 } 
@@ -71,6 +76,10 @@ class PrayerController extends Controller
                                   
                                 foreach($prayerLeaders as $prayerKey => $prayerVal){
                                     if($prayerVal['prayer_date'] === $startWeek->format('Y-m-d') && $prayers[$k]->id === $prayerVal['prayer_id']){
+                                        $imams[] = [
+                                            'name' => $prayerVal['user']['name'],
+                                            'color' => $prayerVal['user']['color'],
+                                        ];
                                         $prayersSection .= '<span class="badge badge-secondary" style="background-color:'.$prayerVal['user']['color'].';">'. $prayerVal['user']['name'] .'</span>';
                                     }
                                 }  
@@ -102,8 +111,7 @@ class PrayerController extends Controller
                 $prayersSection .= '<th>'.$prayers[$i]->name.'</th>';
             } 
 
-            $prayersSection .= '</tr>
-            </thead>';
+            $prayersSection .= '</tr></thead>';
             $prayersSection .= '<tbody>';
  
             $fridays = $this->getAllFridayByMonth($date->format('Y'), $date->format('m')); 
@@ -127,6 +135,10 @@ class PrayerController extends Controller
  
                     foreach($prayerLeaders as $prayerLeader){
                         if($prayerLeader['prayer_date'] === $friday->format('Y-m-d') && $prayerLeader['prayer_id'] === $prayers[$k]->id){
+                            $imams[] = [
+                                'name' => $prayerLeader['user']['name'],
+                                'color' => $prayerLeader['user']['color'],
+                            ];
                             $prayersSection .= '<span class="badge badge-secondary" style="background-color:'.$prayerLeader['user']['color'].';">'. $prayerLeader['user']['name'] .'</span>';
                         }
                     }  
@@ -142,9 +154,13 @@ class PrayerController extends Controller
             
         }  
 
+        
         return response()->json([
             'message' => 'Prayers list',
-            'data' => $prayersSection
+            'data' => [
+               'prayers' => $prayersSection,
+               'imams' => $this->uniqueImams($imams),
+            ]
         ], 200);
     }
 
@@ -208,5 +224,25 @@ class PrayerController extends Controller
 
     return $fridays;
 
+    }
+
+    public function uniqueImams($imams){
+
+        $uniqueArray = [];
+
+        foreach ($imams as $item) {
+            // Create a unique key based on "name" and "color"
+            $key = $item['name'] . '-' . $item['color'];
+            
+            // Check if the key doesn't exist in the uniqueArray
+            if (!array_key_exists($key, $uniqueArray)) {
+                // Add the item to the uniqueArray
+                $uniqueArray[$key] = $item;
+            }
+        }
+
+        // Reset array keys to have consecutive numeric keys (optional)
+        $uniqueArray = array_values($uniqueArray);
+        return $uniqueArray;
     }
 }

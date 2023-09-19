@@ -66,7 +66,8 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $user = User::find($id);
+        return view('admin.user.show', compact('user')); 
     }
 
     /**
@@ -74,7 +75,24 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([ 
+            'name' => ['required', 'string', 'max:255'],  
+            'password' => ['required_if:password_change,==,yes', 'nullable', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        $Payloads = [
+            'name' => $request->name, 
+            'address' => $request->address,
+            'phone_number' => $request->phone_number 
+        ];
+
+        if($request->password_change==='yes'){
+            $Payloads['password'] = Hash::make($request->password);
+        }
+
+        User::where('id', $id)->update($Payloads);
+
+        return redirect()->back()->with('success', 'Imam Has Been Updated Successfully.');  
     }
 
     /**
