@@ -24,7 +24,7 @@
     <nav class="navbar navbar-expand-sm bg-light navbar-light">
         <div class="container">
             <a class="navbar-brand" href="{{ route('index')  }}">
-                <img src="{{ asset('images/logo.png') }}" width="60px" alt="">
+                <img src="{{ asset('images/logo.png') }}" width="200px" alt="">
             </a>
              
             <ul class="navbar-nav">
@@ -194,8 +194,10 @@
                         </section>
                     </div>
                     <div class="col-lg-8">
-                        <table class="table table-responsive pray-times m-0" id="prayer-section"> 
+                        <div class="table-responsive text-nowrap">
+                        <table class="table pray-times m-0" id="prayer-section"> 
                         </table>
+                        </div>
                         <div id="target-services"></div>
                     </div>
                 </div>
@@ -220,7 +222,7 @@
             <div class="row">
                 <div class="col-lg-5 pe-5">
                     <div class="footer-logo">
-                        <img src="images/logo.png" alt="" width="50"
+                        <img src="images/logo.png" alt="" width="200px"
                             class="d-inline-block align-text-top img-fluid my-3">
                     </div> 
                 </div> 

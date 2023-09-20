@@ -24,7 +24,7 @@
     <nav class="navbar navbar-expand-sm bg-light navbar-light">
         <div class="container">
             <a class="navbar-brand" href="{{ route('index')  }}">
-                <img src="{{ asset('images/logo.png') }}" width="60px" alt="">
+                <img src="{{ asset('images/logo.png') }}" width="200px" alt="">
             </a>
              
             <ul class="navbar-nav">

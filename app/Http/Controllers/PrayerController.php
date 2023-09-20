@@ -62,7 +62,8 @@ class PrayerController extends Controller
                                             'name' => $prayerVal['user']['name'],
                                             'color' => $prayerVal['user']['color'],
                                         ];
-                                        $prayersSection .= '<span class="badge badge-secondary" style="background-color:'.$prayerVal['user']['color'].';">'. $prayerVal['user']['name'] .'</span>';
+                                        $prayersSection .= '<span class="badge badge-secondary" style="background-color:'.$prayerVal['user']['color'].';">'. $prayerVal['user']['name'] .'  <i class="fa fa-times" aria-hidden="true" data-id='.$prayers[$k]->id.' data-date='.$startWeek->format('Y-m-d').'  onclick="removeLeader(event)" ></i>
+                                        </span>';
                                     }
                                 } 
 
@@ -80,7 +81,8 @@ class PrayerController extends Controller
                                             'name' => $prayerVal['user']['name'],
                                             'color' => $prayerVal['user']['color'],
                                         ];
-                                        $prayersSection .= '<span class="badge badge-secondary" style="background-color:'.$prayerVal['user']['color'].';">'. $prayerVal['user']['name'] .'</span>';
+                                        $prayersSection .= '<span class="badge badge-secondary" style="background-color:'.$prayerVal['user']['color'].';">'. $prayerVal['user']['name'] .'  <i class="fa fa-times" aria-hidden="true" data-id='.$prayers[$k]->id.' data-date='.$startWeek->format('Y-m-d').' onclick="removeLeader(event)" ></i>
+                                        </span>';
                                     }
                                 }  
 
@@ -139,7 +141,8 @@ class PrayerController extends Controller
                                 'name' => $prayerLeader['user']['name'],
                                 'color' => $prayerLeader['user']['color'],
                             ];
-                            $prayersSection .= '<span class="badge badge-secondary" style="background-color:'.$prayerLeader['user']['color'].';">'. $prayerLeader['user']['name'] .'</span>';
+                            $prayersSection .= '<span class="badge badge-secondary" style="background-color:'.$prayerLeader['user']['color'].';">'. $prayerLeader['user']['name'] .' <i class="fa fa-times" aria-hidden="true" data-id='.$prayers[$k]->id.' data-date='.$friday->format('Y-m-d').' onclick="removeLeader(event)" ></i>
+                            </span>';
                         }
                     }  
 

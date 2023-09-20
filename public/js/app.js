@@ -32,6 +32,7 @@ $(".nav-item").on("click", function(e){
 
 // add lead pray
 $('body').on('click', '.lead-pray-btn', function() {
+  
   var prayer_id = $(this).attr('data-id');
   var date = $(this).attr('data-date');
   $.ajaxSetup({
@@ -109,7 +110,11 @@ $(".prayer-tab").click(function(){
   getPrayers(date, tab);
 });
  
-
+function removeLeader(event){
+  event.stopPropagation();
+  console.log(event );
+  alert('sd');
+}
 
 // getting url and showing calendar according to url 
 
