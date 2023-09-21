@@ -113,7 +113,7 @@ $(".prayer-tab").click(function(){
 function removeLeader(event){
   event.stopPropagation();
   console.log(event );
-  alert('sd');
+  // alert('sd');
 }
 
 // getting url and showing calendar according to url 
