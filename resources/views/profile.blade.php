@@ -14,7 +14,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     <link rel="stylesheet" href="{{ asset('style/style.css') }}">
-    <title>Islamic site</title>
+    <title>Kingston Muslim Association</title>
 </head>
 
 <body>
