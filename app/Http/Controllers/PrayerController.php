@@ -5,14 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Prayer;
 use App\Models\PrayerLeader;
 use Auth;
+use DB;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Exception;
 
 class PrayerController extends Controller
 {  
     public function getPrayers(Request $request){ 
 
         $date = Carbon::create($request->date)->addDay(1);
+        $dateStartEnd = Carbon::create($request->date)->addDay(1);
+        
         $whereData = Carbon::create($request->date)->addDay(1);
         $startWeek = $date->startOfWeek();
         $imams = [];
@@ -21,7 +25,7 @@ class PrayerController extends Controller
         $prayers = Prayer::with(['prayerLeader' => function ($query) use ($date) {
             $query->where('prayer_date', $date );
         },'prayerLeader.user'])
-        ->get();
+        ->get(); 
 
         if( $request->tab === "daily" ){
              
@@ -115,15 +119,16 @@ class PrayerController extends Controller
 
             $prayersSection .= '</tr></thead>';
             $prayersSection .= '<tbody>';
- 
-            $fridays = $this->getAllFridayByMonth($date->format('Y'), $date->format('m')); 
- 
+             
+            $fridays = $this->getAllFridayByMonth($dateStartEnd->format('Y'), $dateStartEnd->format('m')); 
+         
             $prayerLeaders = PrayerLeader::with('user')
-            ->whereRaw("DAYOFWEEK(prayer_date) = 6")->whereBetween(
+            ->whereRaw("EXTRACT(dow FROM prayer_date) = 5")->whereBetween(
                 'prayer_date',
                 [$whereData->startOfMonth()->format('Y-m-d'), $whereData->endOfMonth()->format('Y-m-d')]
             )
-            ->get()->toArray(); 
+            ->get()
+            ->toArray();  
 
             foreach ($fridays as $key => $friday) {
                 
@@ -247,5 +252,29 @@ class PrayerController extends Controller
         // Reset array keys to have consecutive numeric keys (optional)
         $uniqueArray = array_values($uniqueArray);
         return $uniqueArray;
+    }
+
+
+    public function removeLeadPray(Request $request){
+
+        try{
+
+            PrayerLeader::where([
+                ['prayer_id', $request->prayer_id],
+                ['prayer_date', $request->prayer_date]
+            ])->delete();
+
+            return response()->json([
+                'message' => 'Prayer Lead Has Been removed Successfully.',
+                'data' => ''
+            ]);
+            
+        }catch(Exception $e){
+            return response()->json([
+                'message' => 'Something Went Wrong.',
+                'data' => ''
+            ]);
+        }
+        
     }
 }

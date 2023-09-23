@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer('user_id')->nullable();
             $table->integer('prayer_id')->nullable();
             $table->date('prayer_date')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

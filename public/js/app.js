@@ -95,6 +95,14 @@ $('body').on('click', '.lead-pray-btn', function() {
 });
 
 
+$("a.prayer-tab").removeClass("active");
+const defaultTab = localStorage.getItem("tab"); 
+if(defaultTab === null){
+  $('.daily-tab').addClass("active");
+}else{
+  $('.'+defaultTab+'-tab').addClass("active");
+}
+
 $(".prayer-tab").click(function(){
 
   $("a.prayer-tab").removeClass("active");
@@ -112,8 +120,66 @@ $(".prayer-tab").click(function(){
  
 function removeLeader(event){
   event.stopPropagation();
-  console.log(event );
-  // alert('sd');
+  var prayer_id =  event.target.getAttribute('data-id');
+  var date =  event.target.getAttribute('data-date');
+
+  $.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+  }); 
+  $.ajax({
+    url:'/remove-lead-pray',
+    method:'post',
+    data:{
+        prayer_date:date,
+        prayer_id:prayer_id
+    },
+    success:function(response){ 
+
+      const selected = localStorage.getItem("selectedDay"); 
+      if(selected===null || selected===undefined){ 
+        date = new Date(date);
+      }else{ 
+        date = new Date(localStorage.getItem("selectedDay")); 
+      }
+
+      const tab = localStorage.getItem("tab");
+      getPrayers(date, tab);
+
+      Toastify({
+        text: response.message,
+        duration: 3000,
+        destination: "https://github.com/apvarun/toastify-js",
+        newWindow: true,
+        close: true,
+        gravity: "top", // `top` or `bottom`
+        position: "right", // `left`, `center` or `right`
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+        style: {
+          background: "green",
+        },
+        onClick: function(){} // Callback after click
+      }).showToast(); 
+    },
+    error:function(error){ 
+      Toastify({
+        text: error.responseJSON.message,
+        duration: 3000,
+        destination: "https://github.com/apvarun/toastify-js",
+        newWindow: true,
+        close: true,
+        gravity: "top", // `top` or `bottom`
+        position: "right", // `left`, `center` or `right`
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+        style: {
+          background: "#dc3545",
+        },
+        onClick: function(){} // Callback after click
+      }).showToast(); 
+    }
+
+  });   
 }
 
 // getting url and showing calendar according to url 

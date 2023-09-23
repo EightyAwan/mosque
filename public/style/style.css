@@ -63,7 +63,7 @@ h2 {
 
 
 .navbar-nav .dropdown-item:focus, .dropdown-item:hover {
-    background: #014090;
+    background: #014090 !important;
     color: white !important;
 }
 
