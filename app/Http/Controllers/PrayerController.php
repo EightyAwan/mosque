@@ -265,7 +265,7 @@ class PrayerController extends Controller
             ])->delete();
 
             return response()->json([
-                'message' => 'Prayer Lead Has Been removed Successfully.',
+                'message' => 'Prayer Lead Has Been Removed Successfully.',
                 'data' => ''
             ]);
             
