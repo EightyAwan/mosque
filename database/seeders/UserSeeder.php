@@ -18,13 +18,12 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             'name' => 'admin',
             'email' => 'admin@mailinator.com',
-            'phone_number' => '613-555-0130',
-            'address' => '29 Roberts Court
-            La Prairie, QC J5R 0P2',
+            'phone_number' => '613-555-0130', 
             'color' => null,
             'email_verified_at' => Carbon::now(),
             'role_id' => 0,
             'password' => Hash::make('admin123'),
+            'created_at' => Carbon::now()
         ]);
     }
 }

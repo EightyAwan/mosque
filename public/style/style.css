@@ -692,3 +692,19 @@ div#app .form-check-input:checked {
 form label.col-form-label {
     font-size: 18px !important;
 }
+
+td.lead-pray-btn-disabled{
+    cursor: pointer;
+    border: 1px solid #e1e1e1;
+}
+
+.head-month {
+    font-size: 27px;
+    font-weight: bold;
+    color: white;
+    background: #014090;
+}
+button.btn.btn-primary {
+    background: #014090;
+    border-color: #014090;
+}

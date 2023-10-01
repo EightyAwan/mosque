@@ -23,18 +23,7 @@
                         <section class="ftco-section">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="elegant-calencar">
-                                        <div class="wrap-header w-100 d-flex align-items-center img">
-                                            <p id="reset">Today</p>
-                                            <div id="header" class="p-0">
-
-                                                <div class="head-info">
-                                                    <div class="head-month"></div>
-                                                    <div class="head-day"></div>
-                                                </div>
-
-                                            </div>
-                                        </div>
+                                    <div class="elegant-calencar"> 
                                         <div class="calendar-wrap">
                                             <div class="blur-background">
 
@@ -125,6 +114,15 @@
                         </section>
                     </div>
                     <div class="col-lg-8">
+                        <div class="wrap-heade text-center">
+                            <p id="reset" class="d-none">Today</p>
+                            <div id="header" class="p-0">
+                                <div class="head-info">
+                                    <div class="head-month"></div>
+                                    <div class="head-day d-none"></div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="table-responsive text-nowrap">
                         <table class="table pray-times m-0" id="prayer-section"> 
                         </table>
@@ -135,9 +133,8 @@
             </div>
         </div>
     </section>
-
-
-
+ 
 <!-- Tabs content -->
 
 @endsection
+ 

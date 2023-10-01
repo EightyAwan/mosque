@@ -12,7 +12,8 @@ class MainController extends Controller
     // index function
 
     public function index(){
-        return view('index');
+        $users = User::where('role_id', 1)->get();
+        return view('index', compact('users'));
     }
 
     public function profile(){
@@ -28,8 +29,7 @@ class MainController extends Controller
         ]);
 
         $Payloads = [
-            'name' => $request->name, 
-            'address' => $request->address,
+            'name' => $request->name,  
             'phone_number' => $request->phone_number 
         ];
 

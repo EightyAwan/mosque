@@ -20,6 +20,7 @@ class PrayerController extends Controller
         $whereData = Carbon::create($request->date)->addDay(1);
         $startWeek = $date->startOfWeek();
         $imams = [];
+        $leadPrayClass = Auth::user() ? "lead-pray-btn" : "lead-pray-btn-disabled";
         
 
         $prayers = Prayer::with(['prayerLeader' => function ($query) use ($date) {
@@ -57,8 +58,8 @@ class PrayerController extends Controller
                              
                             if($j!==4){
                                 
-                              
-                                $prayersSection .='<td class="lead-pray-btn" data-id='.$prayers[$k]->id.' data-date='.$startWeek->format('Y-m-d').'>';
+                                
+                                $prayersSection .='<td class="'.$leadPrayClass.'" data-id='.$prayers[$k]->id.' data-date='.$startWeek->format('Y-m-d').'>';
 
                                 foreach($prayerLeaders as $prayerKey => $prayerVal){
                                     if($prayerVal['prayer_date'] === $startWeek->format('Y-m-d') && $prayers[$k]->id === $prayerVal['prayer_id']){
@@ -77,7 +78,7 @@ class PrayerController extends Controller
 
                                 if($k!==1){
  
-                                $prayersSection .='<td class="lead-pray-btn"  data-id='.$prayers[$k]->id.' data-date='.$startWeek->format('Y-m-d').'>'; 
+                                $prayersSection .='<td class="'.$leadPrayClass.'"  data-id='.$prayers[$k]->id.' data-date='.$startWeek->format('Y-m-d').'>'; 
                                   
                                 foreach($prayerLeaders as $prayerKey => $prayerVal){
                                     if($prayerVal['prayer_date'] === $startWeek->format('Y-m-d') && $prayers[$k]->id === $prayerVal['prayer_id']){
@@ -138,7 +139,7 @@ class PrayerController extends Controller
                     for($k=5; $k<8; $k++){
                         
 
-                    $prayersSection .='<td class="lead-pray-btn" data-id='.$prayers[$k]->id.' data-date='.$friday->format('Y-m-d').'>'; 
+                    $prayersSection .='<td class="'.$leadPrayClass.'" data-id='.$prayers[$k]->id.' data-date='.$friday->format('Y-m-d').'>'; 
  
                     foreach($prayerLeaders as $prayerLeader){
                         if($prayerLeader['prayer_date'] === $friday->format('Y-m-d') && $prayerLeader['prayer_id'] === $prayers[$k]->id){
@@ -197,6 +198,32 @@ class PrayerController extends Controller
             ],
             [
                 'user_id' => Auth::user()->id 
+            ]
+        );
+
+        return response()->json([
+            'message' => 'Prayer Lead Has Been Added Successfully.',
+            'data' => ''
+        ]);
+    }
+
+    public function addLeadPrayByImam(Request $request){
+ 
+        if(!Auth::user()){
+            return response()->json([
+                'message' => 'Please Login Your Account!',
+                'data' => ''
+            ],401);
+        } 
+         
+        PrayerLeader::updateOrCreate(
+            [
+                
+                'prayer_id' => $request->prayer_id,
+                'prayer_date' => $request->date,
+            ],
+            [
+                'user_id' => $request->user_id 
             ]
         );
 

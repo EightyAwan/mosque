@@ -38,9 +38,11 @@
                         @if (!Auth::user())
 
                             <li><a href="{{ route('login') }}" class="dropdown-item">Login </a></li>
+                            <li><a href="{{ url('password/reset') }}" class="dropdown-item">Reset Password
+                                </a></li>
                         @else
                             @if (Auth::user()->role_id === 0)
-                                <li><a class="dropdown-item" href="{{ route('admin') }}">Dashboard</a></li>
+                                <li><a class="dropdown-item" href="{{ route('dashboard') }}">Dashboard</a></li>
                             @else
                                 <li><a class="dropdown-item" href="{{ route('profile') }}">Profile</a></li>
                             @endif
@@ -96,10 +98,37 @@
         <p class="m-0 p-0">© Copyright 2023 by Dynalogies. All Rights Reserved</p>
     </div>
 
+    <div class="modal fade" id="imamModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
 
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Select Imam</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
 
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <input type="hidden" id="modal_prayer_id" />
+                    <input type="hidden" id="modal_date" />
+                    <select class="form-control" id="modal_imam">
+                        <option disabled>Please Select Imams</option>
+                        @foreach (Helper::getImams() as $user)
+                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="save-modal">Save Changes</button>
+                </div>
 
+            </div>
+        </div>
+    </div>
 
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/popper.js') }}"></script>
@@ -149,7 +178,85 @@
         }
         const tab = localStorage.getItem("tab");
         getPrayers(date, tab);
+
+        function removeLeader(event) {
+            event.stopPropagation();
+            var prayer_id = event.target.getAttribute('data-id');
+            var date = event.target.getAttribute('data-date');
+
+            $("#modal_prayer_id").val(prayer_id);
+            $("#modal_date").val(date);
+
+            $('#imamModal').modal('show');
+        }
+
+        $("#save-modal").click(function() { 
+            var mPrayerId = $("#modal_prayer_id").val();
+            var mDate = $("#modal_date").val();
+            var mImam = $("#modal_imam").val();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: '/add-lead-pray-by-imam',
+                method: 'post',
+                data: {
+                    date: mDate,
+                    prayer_id: mPrayerId,
+                    user_id: mImam
+                },
+                success: function(response) {
+                    $('#imamModal').modal('hide');
+                    const selected = localStorage.getItem("selectedDay");
+                    if (selected === null || selected === undefined) {
+                        date = new Date(date);
+                    } else {
+                        date = new Date(localStorage.getItem("selectedDay"));
+                    }
+
+                    const tab = localStorage.getItem("tab");
+                    getPrayers(date, tab);
+
+                    Toastify({
+                        text: response.message,
+                        duration: 3000,
+                        destination: "https://github.com/apvarun/toastify-js",
+                        newWindow: true,
+                        close: true,
+                        gravity: "top", // `top` or `bottom`
+                        position: "right", // `left`, `center` or `right`
+                        stopOnFocus: true, // Prevents dismissing of toast on hover
+                        style: {
+                            background: "green",
+                        },
+                        onClick: function() {} // Callback after click
+                    }).showToast();
+                },
+                error: function(error) {
+                    $('#imamModal').modal('hide');
+                    Toastify({
+                        text: error.responseJSON.message,
+                        duration: 3000,
+                        destination: "https://github.com/apvarun/toastify-js",
+                        newWindow: true,
+                        close: true,
+                        gravity: "top", // `top` or `bottom`
+                        position: "right", // `left`, `center` or `right`
+                        stopOnFocus: true, // Prevents dismissing of toast on hover
+                        style: {
+                            background: "#dc3545",
+                        },
+                        onClick: function() {} // Callback after click
+                    }).showToast();
+                }
+
+            });
+
+        });
     </script>
+    @yield('modal')
 </body>
 
 </html>

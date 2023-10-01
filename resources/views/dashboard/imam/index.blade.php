@@ -14,8 +14,8 @@
                       <tr>
                         <th>Name</th>
                         <th>Email</th>
-                        <th>Phone Number</th>
-                        <th>Address</th> 
+                        <th>Phone Number</th> 
+                        <th>Color</th> 
                         <th>Created At</th>
                         <th>Action</th>
                       </tr>
@@ -25,11 +25,16 @@
                       <tr>
                         <td>{{ $user->name }}</td> 
                         <td>{{ $user->email }}</td> 
-                        <td>{{ $user->phone_number }}</td> 
-                        <td>{{ $user->address }}</td>  
+                        <td>{{ $user->phone_number }}</td>  
+                        <td><div style="background-color:{{ $user->color }}; width:30px; height:30px; "> </div></td>  
                         <td>{{ $user->created_at->diffForHumans() }}</td> 
                         <td>
-                            <a href="{{ route('user.edit', $user->id) }}" class="btn btn-primary btn-small">Edit</a> 
+                            <a href="{{ route('imam.edit', $user->id) }}" class="btn btn-primary btn-small">Edit</a>
+                            <form action="{{ route('imam.destroy', $user->id) }}" method="POST">
+                              @method('DELETE')
+                              @csrf
+                              <button class="btn btn-danger btn-small">Delete</button>
+                            </form>
                         </td> 
                       </tr>
                     @endforeach
