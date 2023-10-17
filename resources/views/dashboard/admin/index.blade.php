@@ -5,10 +5,15 @@
     <div class="row justify-content-center">
         <div class="col-md-12"><div class="heading">
                         <H2> Admin List</H2>
+                        @if (\Session::has('success'))
+                  <div class="alert alert-success"> 
+                    {!! \Session::get('success') !!} 
+                  </div>
+                  @endif
                     </div>
             <div class="card">
                 <div class="container">
-                    
+                  
                 <table class="table">
                     <thead>
                       <tr>
@@ -31,7 +36,7 @@
                             <form action="{{ route('admin.destroy', $user->id) }}" method="POST">
                               @method('DELETE')
                               @csrf
-                              <button class="btn btn-danger btn-small">Delete</button>
+                              <button class="btn btn-danger btn-small" onclick="return confirm('Are you sure you want to delete this?');">Delete</button>
                             </form>
 
                         </td> 

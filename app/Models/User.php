@@ -25,6 +25,7 @@ class User extends Authenticatable
         'color',
         'role_id',
         'password',
+        'is_irc_imam'
     ];
 
     /**

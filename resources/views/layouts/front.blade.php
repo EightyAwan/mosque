@@ -124,6 +124,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="save-modal">Save Changes</button>
+                    <button type="button" class="btn btn-primary" id="clear-modal">Clear Assigned</button>
                 </div>
 
             </div>
@@ -144,7 +145,32 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flickity/2.0.5/flickity.pkgd.min.js"></script>
     <script src="{{ asset('js/app.js') }}"></script>
     <script>
-        async function getPrayers(selectedDay, tab = null) {
+
+        function getIrcCalendar(selectedDay) {
+            $.ajax({
+                url: '/get-irc-calendar',
+                method: 'get',
+                data: {
+                    date: selectedDay.toISOString().slice(0, 10) 
+                },
+                success: function(response) {
+                    $("#irc-section").html(response.data.prayers); 
+                    var imams_color = '<h3>Imams:</h3>'; 
+                    for (let i = 0; i < response.data.imams.length; i++) {
+                        imams_color +=
+                            '<div class="d-flex align-items-center justify-content-between"> <b class="imam-name">' +
+                            response.data.imams[i]['name'] +
+                            '</b> <div class="imam-color1" style="background-color:' + response.data.imams[
+                                i]['color'] + ';" ></div> </div>';
+                    } 
+                    $("#calender-date").html(response.data.date);
+                    $(".imam-name-sec").html(imams_color);
+
+                }
+            });
+        }
+
+        function getPrayers(selectedDay, tab = null) {
             $.ajax({
                 url: '/get-prayers',
                 method: 'get',
@@ -153,10 +179,8 @@
                     tab
                 },
                 success: function(response) {
-                    $("#prayer-section").html(response.data.prayers);
-
-                    var imams_color = '<h3>Imams:</h3>';
-
+                    $("#prayer-section").html(response.data.prayers); 
+                    var imams_color = '<h3>Imams:</h3>'; 
                     for (let i = 0; i < response.data.imams.length; i++) {
                         imams_color +=
                             '<div class="d-flex align-items-center justify-content-between"> <b class="imam-name">' +
@@ -164,20 +188,25 @@
                             '</b> <div class="imam-color1" style="background-color:' + response.data.imams[
                                 i]['color'] + ';" ></div> </div>';
                     }
-
+                    if(tab==="daily"){
+                        $("#title-heading").text("Daily Prayer Imams");
+                    }else{
+                        $("#title-heading").text("Jumma Prayer Imams");
+                    }
+                    $("#calender-date").html(response.data.date);
                     $(".imam-name-sec").html(imams_color);
 
                 }
             });
-        }
-        const selected = localStorage.getItem("selectedDay");
-        if (selected === null || selected === undefined) {
-            var date = new Date();
-        } else {
-            var date = new Date(localStorage.getItem("selectedDay"));
-        }
-        const tab = localStorage.getItem("tab");
+        } 
+
+        var date = new Date();  
+        const tab = "daily";
+        localStorage.setItem("selectedDay", date);
+        localStorage.setItem("tab", tab); 
         getPrayers(date, tab);
+
+        getIrcCalendar(date);
 
         function removeLeader(event) {
             event.stopPropagation();
@@ -186,7 +215,18 @@
 
             $("#modal_prayer_id").val(prayer_id);
             $("#modal_date").val(date);
+            $("#clear-modal").show();
+            $('#imamModal').modal('show');
+        }
 
+        function adminRemoveLeader(event) {
+            event.stopPropagation();
+            var prayer_id = event.target.getAttribute('data-id');
+            var date = event.target.getAttribute('data-date');
+
+            $("#modal_prayer_id").val(prayer_id);
+            $("#modal_date").val(date);
+            $("#clear-modal").hide();
             $('#imamModal').modal('show');
         }
 
@@ -206,6 +246,72 @@
                     date: mDate,
                     prayer_id: mPrayerId,
                     user_id: mImam
+                },
+                success: function(response) {
+                    $('#imamModal').modal('hide');
+                    const selected = localStorage.getItem("selectedDay");
+                    if (selected === null || selected === undefined) {
+                        date = new Date(date);
+                    } else {
+                        date = new Date(localStorage.getItem("selectedDay"));
+                    }
+
+                    const tab = localStorage.getItem("tab");
+                    getPrayers(date, tab);
+
+                    Toastify({
+                        text: response.message,
+                        duration: 3000,
+                        destination: "https://github.com/apvarun/toastify-js",
+                        newWindow: true,
+                        close: true,
+                        gravity: "top", // `top` or `bottom`
+                        position: "right", // `left`, `center` or `right`
+                        stopOnFocus: true, // Prevents dismissing of toast on hover
+                        style: {
+                            background: "green",
+                        },
+                        onClick: function() {} // Callback after click
+                    }).showToast();
+                },
+                error: function(error) {
+                    $('#imamModal').modal('hide');
+                    Toastify({
+                        text: error.responseJSON.message,
+                        duration: 3000,
+                        destination: "https://github.com/apvarun/toastify-js",
+                        newWindow: true,
+                        close: true,
+                        gravity: "top", // `top` or `bottom`
+                        position: "right", // `left`, `center` or `right`
+                        stopOnFocus: true, // Prevents dismissing of toast on hover
+                        style: {
+                            background: "#dc3545",
+                        },
+                        onClick: function() {} // Callback after click
+                    }).showToast();
+                }
+
+            });
+
+        });
+
+        // clear assign
+
+        $("#clear-modal").click(function() { 
+            var mPrayerId = $("#modal_prayer_id").val();
+            var mDate = $("#modal_date").val(); 
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: '/remove-lead-pray',
+                method: 'post',
+                data: {
+                    prayer_date: mDate,
+                    prayer_id: mPrayerId 
                 },
                 success: function(response) {
                     $('#imamModal').modal('hide');

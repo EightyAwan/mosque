@@ -41,8 +41,7 @@ class AdminController extends Controller
 
         User::create([
         'name' => $request->name,
-        'email' => $request->email,
-        'address' => $request->address,
+        'email' => $request->email, 
         'phone_number' => $request->phone_number,
         'color' => $this->getColor(),
         'role_id' => 0,
@@ -81,8 +80,7 @@ class AdminController extends Controller
         ]);
 
         $Payloads = [
-            'name' => $request->name, 
-            'address' => $request->address,
+            'name' => $request->name,  
             'phone_number' => $request->phone_number 
         ];
 
@@ -98,11 +96,16 @@ class AdminController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        $user = User::find($id);
-        $user->delete();
-        return redirect()->back()->with('success', 'Admin Has Been deleted Successfully.');
+        try{
+            $user = User::find($id);
+            $user->delete();
+            return redirect()->back()->with('success', 'Admin Has Been Deleted Successfully.');
+
+        }catch (Exception $e){
+            return redirect()->back()->with('error', 'Something went wrong.');  
+        }
     }
 
     public function getColor(){

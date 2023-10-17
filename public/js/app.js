@@ -96,7 +96,7 @@ $('body').on('click', '.lead-pray-btn', function() {
 
 
 $("a.prayer-tab").removeClass("active");
-const defaultTab = localStorage.getItem("tab"); 
+const defaultTab = 'daily'; 
 if(defaultTab === null){
   $('.daily-tab').addClass("active");
 }else{

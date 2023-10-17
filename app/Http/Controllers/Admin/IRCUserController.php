@@ -8,17 +8,17 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Exception;
 
-class UserController extends Controller
+class IRCUserController extends Controller
 {
-    /**
+     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $users = User::where('role_id', 1)
+        $users = User::where('role_id', 2)
         ->paginate(10);
 
-        return view('dashboard.imam.index', compact('users'));
+        return view('dashboard.irc-user.index', compact('users'));
     }
 
     /**
@@ -26,7 +26,7 @@ class UserController extends Controller
      */
     public function create()
     {
-       return view('dashboard.imam.create');
+       return view('dashboard.irc-user.create');
     }
 
     /**
@@ -38,9 +38,8 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'color' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'is_irc' => 'in:no,yes',
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);  
+        ]); 
 
         User::create([
         'name' => $request->name,
@@ -48,12 +47,11 @@ class UserController extends Controller
         'address' => $request->address,
         'phone_number' => $request->phone_number,
         'color' => $request->color,
-        'role_id' => 1,
-        'is_irc_imam' => $request->is_irc,
+        'role_id' => 2, 
         'password' => Hash::make($request->password),
         ]);
 
-        return redirect()->back()->with('success', 'Imam Has Been Added Successfully.');  
+        return redirect()->back()->with('success', 'IRC User Has Been Added Successfully.');  
 
     }
 
@@ -71,7 +69,7 @@ class UserController extends Controller
     public function edit(string $id)
     {
         $user = User::find($id);
-        return view('dashboard.imam.edit', compact('user')); 
+        return view('dashboard.irc-user.edit', compact('user')); 
     }
 
     /**
@@ -80,16 +78,14 @@ class UserController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([ 
-            'name' => ['required', 'string', 'max:255'],
-            'is_irc' => 'in:no,yes',  
+            'name' => ['required', 'string', 'max:255'],  
             'password' => ['required_if:password_change,==,yes', 'nullable', 'string', 'min:8', 'confirmed'],
         ]);
 
         $Payloads = [
             'name' => $request->name,  
             'phone_number' => $request->phone_number, 
-            'color' => $request->color,
-            'is_irc_imam' => $request->is_irc
+            'color' => $request->color 
         ];
 
         if($request->password_change==='yes'){
@@ -98,7 +94,7 @@ class UserController extends Controller
 
         User::where('id', $id)->update($Payloads);
 
-        return redirect()->back()->with('success', 'Imam Has Been Updated Successfully.');  
+        return redirect()->back()->with('success', 'IRC User Has Been Updated Successfully.');  
     }
 
     /**
@@ -109,11 +105,10 @@ class UserController extends Controller
         try{
             $user = User::find($id);
             $user->delete();
-            return redirect()->back()->with('success', 'Imam Has Been Deleted Successfully.');
+            return redirect()->back()->with('success', 'IRC User Has Been Deleted Successfully.');
 
         }catch (Exception $e){
             return redirect()->back()->with('error', 'Something went wrong.');  
         }
     }
- 
 }

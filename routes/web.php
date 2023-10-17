@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\PrayerController;
+use App\Http\Controllers\IrcController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,7 +23,9 @@ Auth::routes();
 
 
 Route::get('/', [MainController::class,'index'])->name('index');
+Route::get('/irc-calendar', [MainController::class,'ircCalendar'])->name('irc-calendar');
 Route::get('/get-prayers',[PrayerController::class,'getPrayers'])->name('get-prayers');
+Route::get('/get-irc-calendar',[IrcController::class,'getIrcCalendar'])->name('get-prayers');
 
 
 Route::group(['middleware' => ['auth']], function () {  
@@ -37,5 +40,6 @@ Route::group(['middleware' => ['auth']], function () {
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'isadmin']], function () {  
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
     Route::resource('imam', App\Http\Controllers\Admin\UserController::class);
+    Route::resource('irc-user', App\Http\Controllers\Admin\IRCUserController::class);
     Route::resource('admin', App\Http\Controllers\Admin\AdminController::class);
  });

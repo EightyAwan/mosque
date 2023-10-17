@@ -41,5 +41,9 @@ class MainController extends Controller
 
         return redirect()->back()->with('success', 'Imam Has Been Updated Successfully.');  
     }
+
+    public function ircCalendar(){
+        return view('irc-calendar');
+    } 
  
 }

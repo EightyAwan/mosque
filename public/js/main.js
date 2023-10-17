@@ -41,6 +41,8 @@
 
             e?headDay[0].innerHTML = e : headDay[0].innerHTML = day;
             headMonth[0].innerHTML = monthTag[month] +" - " + year;        
+            // e?headDay[1].innerHTML = e : headDay[0].innerHTML = day;
+            // headMonth[1].innerHTML = monthTag[month] +" - " + year;   
      };
     
     Calendar.prototype.drawDays = function() {
@@ -96,7 +98,10 @@
         localStorage.setItem("selectedDay", selectedDay);
         var date = new Date(localStorage.getItem("selectedDay")); 
         // Get prayers by date  
-        getPrayers(date, tab); 
+        getPrayers(date, tab);
+
+
+        getIrcCalendar(date);
 
         this.drawHeader(o.innerHTML);
         this.setCookie('selected_day', 1);

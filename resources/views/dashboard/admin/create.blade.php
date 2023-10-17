@@ -87,6 +87,9 @@
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Save') }}
                                 </button>
+                                <a href="{{ route('admin.index') }}" class="btn btn-danger">
+                                    {{ __('Cancel') }}
+                                </a>
                             </div>
                         </div>
                     </form>

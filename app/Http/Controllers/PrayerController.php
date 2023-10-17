@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Prayer;
 use App\Models\PrayerLeader;
+use App\Models\User;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
@@ -18,9 +19,14 @@ class PrayerController extends Controller
         $dateStartEnd = Carbon::create($request->date)->addDay(1);
         
         $whereData = Carbon::create($request->date)->addDay(1);
-        $startWeek = $date->startOfWeek();
-        $imams = [];
+        $startWeek = $date->startOfWeek(); 
         $leadPrayClass = Auth::user() ? "lead-pray-btn" : "lead-pray-btn-disabled";
+        $onclickEvent = Auth::user() ? 'onclick=removeLeader(event)' : ' ';
+        $adminOnclickEvent = Auth::user()?->role_id === 0 ? 'onclick=adminRemoveLeader(event)' :  ' ';
+
+        $imams = User::where('role_id', 1)
+        ->get()
+        ->toArray();
         
 
         $prayers = Prayer::with(['prayerLeader' => function ($query) use ($date) {
@@ -33,7 +39,12 @@ class PrayerController extends Controller
             $prayerLeaders = PrayerLeader::with('user')
             ->whereBetween('prayer_date',[
                 $whereData->startOfWeek()->format('Y-m-d'), $whereData->endOfWeek()->format('Y-m-d')
-            ])->get()->toArray();
+            ])->whereHas('user', function ($query) {
+                // Add a condition to filter only non-deleted users.
+                $query->where('deleted_at', null);
+            })
+            ->get()
+            ->toArray();
  
             $prayersSection = '<thead class="table-dark">
             <tr>
@@ -59,39 +70,50 @@ class PrayerController extends Controller
                             if($j!==4){
                                 
                                 
-                                $prayersSection .='<td class="'.$leadPrayClass.'" data-id='.$prayers[$k]->id.' data-date='.$startWeek->format('Y-m-d').'>';
-
+                                // $prayersSection .='<td class="'.$leadPrayClass.'" data-id='.$prayers[$k]->id.' data-date='.$startWeek->format('Y-m-d').'>';
+                                $hasLead='';
                                 foreach($prayerLeaders as $prayerKey => $prayerVal){
                                     if($prayerVal['prayer_date'] === $startWeek->format('Y-m-d') && $prayers[$k]->id === $prayerVal['prayer_id']){
-                                        $imams[] = [
-                                            'name' => $prayerVal['user']['name'],
-                                            'color' => $prayerVal['user']['color'],
-                                        ];
-                                        $prayersSection .= '<span class="badge badge-secondary" style="background-color:'.$prayerVal['user']['color'].';">'. $prayerVal['user']['name'] .'  <i class="fa fa-times" aria-hidden="true" data-id='.$prayers[$k]->id.' data-date='.$startWeek->format('Y-m-d').'  onclick="removeLeader(event)" ></i>
+                                        // $imams[] = [
+                                        //     'name' => $prayerVal['user']['name'],
+                                        //     'color' => $prayerVal['user']['color'],
+                                        // ];
+                                        $hasLead .= '<span class="badge badge-secondary" style="background-color:'.$prayerVal['user']['color'].';">'. $prayerVal['user']['name'] .'  <i class="fa fa-times" aria-hidden="true" data-id='.$prayers[$k]->id.' data-date='.$startWeek->format('Y-m-d').'  '.$onclickEvent.' ></i>
                                         </span>';
                                     }
-                                } 
+                                }
 
+                                if($hasLead==null){
+                                    $prayersSection .='<td class="'.$leadPrayClass.'"  data-id='.$prayers[$k]->id.' data-date='.$startWeek->format('Y-m-d'). ' '.$adminOnclickEvent. '>'; 
+                                }else{
+                                    $prayersSection .='<td class="lead-pray-btn-disabled"  data-id='.$prayers[$k]->id.' data-date='.$startWeek->format('Y-m-d').'>'; 
+                                }
+                                $prayersSection .= $hasLead;
                                 $prayersSection .='</td>'; 
 
                             }else{
 
                                 if($k!==1){
  
-                                $prayersSection .='<td class="'.$leadPrayClass.'"  data-id='.$prayers[$k]->id.' data-date='.$startWeek->format('Y-m-d').'>'; 
-                                  
-                                foreach($prayerLeaders as $prayerKey => $prayerVal){
-                                    if($prayerVal['prayer_date'] === $startWeek->format('Y-m-d') && $prayers[$k]->id === $prayerVal['prayer_id']){
-                                        $imams[] = [
-                                            'name' => $prayerVal['user']['name'],
-                                            'color' => $prayerVal['user']['color'],
-                                        ];
-                                        $prayersSection .= '<span class="badge badge-secondary" style="background-color:'.$prayerVal['user']['color'].';">'. $prayerVal['user']['name'] .'  <i class="fa fa-times" aria-hidden="true" data-id='.$prayers[$k]->id.' data-date='.$startWeek->format('Y-m-d').' onclick="removeLeader(event)" ></i>
-                                        </span>';
-                                    }
-                                }  
-
-                                $prayersSection .='</td>'; 
+                                    
+                                    $hasLead='';
+                                    foreach($prayerLeaders as $prayerKey => $prayerVal){
+                                        if($prayerVal['prayer_date'] === $startWeek->format('Y-m-d') && $prayers[$k]->id === $prayerVal['prayer_id']){
+                                            // $imams[] = [
+                                            //     'name' => $prayerVal['user']['name'],
+                                            //     'color' => $prayerVal['user']['color'],
+                                            // ];
+                                            $hasLead = '<span class="badge badge-secondary" style="background-color:'.$prayerVal['user']['color'].';">'. $prayerVal['user']['name'] .'  <i class="fa fa-times" aria-hidden="true" data-id='.$prayers[$k]->id.' data-date='.$startWeek->format('Y-m-d').' '.$onclickEvent.' ></i>
+                                            </span>';
+                                        }
+                                    }  
+                                    if($hasLead==null){
+                                        $prayersSection .='<td class="'.$leadPrayClass.'"  data-id='.$prayers[$k]->id.' data-date='.$startWeek->format('Y-m-d'). ' '.$adminOnclickEvent. '>'; 
+                                    }else{
+                                        $prayersSection .='<td class="lead-pray-btn-disabled"  data-id='.$prayers[$k]->id.' data-date='.$startWeek->format('Y-m-d').'>'; 
+                                    } 
+                                    $prayersSection .= $hasLead;
+                                    $prayersSection .='</td>'; 
 
                                 }else{
                                     $prayersSection .='<td></td>';
@@ -128,6 +150,10 @@ class PrayerController extends Controller
                 'prayer_date',
                 [$whereData->startOfMonth()->format('Y-m-d'), $whereData->endOfMonth()->format('Y-m-d')]
             )
+            ->whereHas('user', function ($query) {
+                // Add a condition to filter only non-deleted users.
+                $query->where('deleted_at', null);
+            })
             ->get()
             ->toArray();  
 
@@ -139,19 +165,25 @@ class PrayerController extends Controller
                     for($k=5; $k<8; $k++){
                         
 
-                    $prayersSection .='<td class="'.$leadPrayClass.'" data-id='.$prayers[$k]->id.' data-date='.$friday->format('Y-m-d').'>'; 
- 
+                    // $prayersSection .='<td class="'.$leadPrayClass.'" data-id='.$prayers[$k]->id.' data-date='.$friday->format('Y-m-d').'>'; 
+                    $hasLead='';
                     foreach($prayerLeaders as $prayerLeader){
                         if($prayerLeader['prayer_date'] === $friday->format('Y-m-d') && $prayerLeader['prayer_id'] === $prayers[$k]->id){
-                            $imams[] = [
-                                'name' => $prayerLeader['user']['name'],
-                                'color' => $prayerLeader['user']['color'],
-                            ];
-                            $prayersSection .= '<span class="badge badge-secondary" style="background-color:'.$prayerLeader['user']['color'].';">'. $prayerLeader['user']['name'] .' <i class="fa fa-times" aria-hidden="true" data-id='.$prayers[$k]->id.' data-date='.$friday->format('Y-m-d').' onclick="removeLeader(event)" ></i>
+                            // $imams[] = [
+                            //     'name' => $prayerLeader['user']['name'],
+                            //     'color' => $prayerLeader['user']['color'],
+                            // ];
+                            $hasLead = '<span class="badge badge-secondary" style="background-color:'.$prayerLeader['user']['color'].';">'. $prayerLeader['user']['name'] .' <i class="fa fa-times" aria-hidden="true" data-id='.$prayers[$k]->id.' data-date='.$friday->format('Y-m-d').' '.$onclickEvent.' ></i>
                             </span>';
                         }
                     }  
 
+                    if($hasLead==null){
+                        $prayersSection .='<td class="'.$leadPrayClass.'"  data-id='.$prayers[$k]->id.' data-date='.$friday->format('Y-m-d'). ' '.$adminOnclickEvent. '>'; 
+                    }else{
+                        $prayersSection .='<td class="lead-pray-btn-disabled"  data-id='.$prayers[$k]->id.' data-date='.$friday->format('Y-m-d').'>'; 
+                    } 
+                    $prayersSection .= $hasLead;
                     $prayersSection .='</td>';  
 
                     }
@@ -169,6 +201,7 @@ class PrayerController extends Controller
             'data' => [
                'prayers' => $prayersSection,
                'imams' => $this->uniqueImams($imams),
+               'date' => $date->format('F-Y')
             ]
         ], 200);
     }
@@ -188,6 +221,15 @@ class PrayerController extends Controller
                 'message' => 'Only imams can lead the pray.',
                 'data' => ''
             ],401);
+        }
+
+
+        $date = Carbon::create($request->date);
+        if ($date->isPast()) {
+            return response()->json([
+                'message' => 'Sorry, you cannot lead this prayer because the date is in the past.',
+                'data' => ''
+            ],422);
         }
          
         PrayerLeader::updateOrCreate(
@@ -214,18 +256,23 @@ class PrayerController extends Controller
                 'message' => 'Please Login Your Account!',
                 'data' => ''
             ],401);
+        }
+        
+        $date = Carbon::create($request->date);
+        if ($date->isPast()) {
+            return response()->json([
+                'message' => 'Sorry, you cannot assign leader because the date is in the past.',
+                'data' => ''
+            ],422);
         } 
          
-        PrayerLeader::updateOrCreate(
-            [
-                
+        PrayerLeader::updateOrCreate([ 
                 'prayer_id' => $request->prayer_id,
                 'prayer_date' => $request->date,
             ],
             [
                 'user_id' => $request->user_id 
-            ]
-        );
+            ]);
 
         return response()->json([
             'message' => 'Prayer Lead Has Been Added Successfully.',
@@ -283,9 +330,15 @@ class PrayerController extends Controller
 
 
     public function removeLeadPray(Request $request){
-
+ 
         try{
-
+            $date = Carbon::create($request->prayer_date);
+            if ($date->isPast()) {
+                return response()->json([
+                    'message' => 'Sorry, you cannot remove this leader because the date is in the past.',
+                    'data' => ''
+                ],422);
+            } 
             PrayerLeader::where([
                 ['prayer_id', $request->prayer_id],
                 ['prayer_date', $request->prayer_date]

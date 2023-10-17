@@ -5,16 +5,8 @@
 
 
     <section class="prayer-calendar">
-        <h2 class="text-center bottom-line" id="title-heading">Daily Prayer Imams</h2>
-        <div class="container align-items-center">
-            <div class="d-flex justify-content-between align-items-center mt-5 pt-5">
-                <div>
-                    <a class="prayer-tab daily-tab active" data-id="daily">Daily</a>
-                    <a class="prayer-tab friday-tab" data-id="friday">Jumma</a>
-                </div>
-                <div class="imam-name-sec">
-                </div>
-            </div>
+        <h2 class="text-center bottom-line">IRC Calendar</h2>
+        <div class="container align-items-center"> 
         </div>
         <div class="calendar-sec">
             <div class="container">
@@ -135,7 +127,7 @@
                             </div>
                         </div>
                         <div class="table-responsive text-nowrap">
-                            <table class="table pray-times m-0" id="prayer-section">
+                            <table class="table pray-times m-0" id="irc-section">
                             </table>
                         </div>
                         <div id="target-services"></div>

@@ -335,6 +335,11 @@ h2 {
     background: #014090;
 }
 
+.my-cl-header .head-month {
+    background-color: white;
+    font-size: 20px;
+}
+
 .ftco-section #disabled {
     cursor: default;
     background: transparent;
@@ -707,4 +712,13 @@ td.lead-pray-btn-disabled{
 button.btn.btn-primary {
     background: #014090;
     border-color: #014090;
+}
+
+a.btn.btn-danger {
+    background: #fd0202;
+    border-radius: 0;
+    font-size: 18px;
+    font-weight: 500;
+    border-color: #014090 !important;
+    transition: 0.5s;
 }

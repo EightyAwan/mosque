@@ -5,24 +5,17 @@
     <div class="row justify-content-center">
         <div class="col-md-12"><div class="heading">
                         <H2> Imams List</H2>
-                        @if (\Session::has('success'))
-                            <div class="alert alert-success"> 
-                              {!! \Session::get('success') !!} 
-                            </div>
-                        @endif
                     </div>
             <div class="card">
                 <div class="container">
                     
-
                 <table class="table">
                     <thead>
                       <tr>
                         <th>Name</th>
                         <th>Email</th>
-                        <th>Phone Number</th> 
-                        <th>Color</th>
-                        <th>Is IRC User</th> 
+                        <th>Phone Number</th>
+                        <th>Address</th> 
                         <th>Created At</th>
                         <th>Action</th>
                       </tr>
@@ -32,17 +25,11 @@
                       <tr>
                         <td>{{ $user->name }}</td> 
                         <td>{{ $user->email }}</td> 
-                        <td>{{ $user->phone_number }}</td>  
-                        <td><div style="background-color:{{ $user->color }}; width:30px; height:30px; "> </div></td>
-                        <td>{{ $user->is_irc_imam }}</td>
+                        <td>{{ $user->phone_number }}</td> 
+                        <td>{{ $user->address }}</td>  
                         <td>{{ $user->created_at->diffForHumans() }}</td> 
                         <td>
-                            <a href="{{ route('imam.edit', $user->id) }}" class="btn btn-primary btn-small">Edit</a>
-                            <form action="{{ route('imam.destroy', $user->id) }}" method="POST">
-                              @method('DELETE')
-                              @csrf
-                              <button class="btn btn-danger btn-small" onclick="return confirm('Are you sure you want to delete this?');">Delete</button>
-                            </form>
+                            <a href="{{ route('user.edit', $user->id) }}" class="btn btn-primary btn-small">Edit</a> 
                         </td> 
                       </tr>
                     @endforeach
